@@ -6,17 +6,17 @@
 </head>
 <body>
   <h1>Задайте вопрос ChatGPT</h1>
-
   <form id="question-form">
     <label for="question">Ваш вопрос:</label>
     <input type="text" id="question" name="question" required>
     <br>
+    <label for="api-key">Ваш API-ключ:</label>
+    <input type="text" id="api-key" name="api-key" required>
+    <br>
     <button type="submit">Получить ответ</button>
   </form>
-
   <h2>Ответ:</h2>
   <div id="answer"></div>
-
   <script>
     const form = document.getElementById('question-form');
     const answerDiv = document.getElementById('answer');
@@ -27,13 +27,14 @@
       const questionInput = document.getElementById('question');
       const question = questionInput.value;
 
-      const answer = await getAnswerFromChatGPT(question);
+      const apiKeyInput = document.getElementById('api-key');
+      const apiKey = apiKeyInput.value;
+
+      const answer = await getAnswerFromChatGPT(question, apiKey);
       answerDiv.innerHTML = answer;
     });
 
-    async function getAnswerFromChatGPT(question) {
-      const apiKey = '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';
-
+    async function getAnswerFromChatGPT(question, apiKey) {
       try {
         const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
           prompt: question,
