@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +32,7 @@
     });
 
     async function getAnswerFromChatGPT(question) {
-      const apiKey = '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'; // Замените на свой API-ключ
+      const apiKey = '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';
 
       try {
         const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
