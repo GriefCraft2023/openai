@@ -1,1 +1,60 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Задайте вопрос ChatGPT</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <h1>Задайте вопрос ChatGPT</h1>
+
+  <form id="question-form">
+    <label for="question">Ваш вопрос:</label>
+    <input type="text" id="question" name="question" required>
+    <br>
+    <button type="submit">Получить ответ</button>
+  </form>
+
+  <h2>Ответ:</h2>
+  <div id="answer"></div>
+
+  <script>
+    const form = document.getElementById('question-form');
+    const answerDiv = document.getElementById('answer');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const questionInput = document.getElementById('question');
+      const question = questionInput.value;
+
+      const answer = await getAnswerFromChatGPT(question);
+      answerDiv.innerHTML = answer;
+    });
+
+    async function getAnswerFromChatGPT(question) {
+      const apiKey = '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'; // Замените на свой API-ключ
+
+      try {
+        const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
+          prompt: question,
+          max_tokens: 100,
+          temperature: 0.7,
+          n: 1,
+          stop: null
+        }, {
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        return response.data.choices[0].text.trim();
+      } catch (error) {
+        console.error(error);
+        return 'Ошибка при получении ответа. Пожалуйста, проверьте консоль разработчика для получения подробностей об ошибке.';
+      }
+    }
+  </script>
+</body>
+</html>
